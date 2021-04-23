@@ -1,4 +1,4 @@
-import discord
+import discord, json
 import random, string, os
 import time, datetime
 from discord.ext import commands
@@ -14,8 +14,13 @@ def NitroBox(number):
     code1 = ''.join(random.choices(string.ascii_letters + string.digits, k=24))
     return f'https://discord.com/billing/promotions/xbox-game-pass/redeem/{code1}'
 
-prefix = "/"
-token = "Token-Here"
+with open('config.json') as f:
+	config = json.load(f)
+
+token = config.get('token')
+prefix = config.get("prefix")
+
+
 bot = commands.Bot(command_prefix=prefix)
 link = "discord.gift/"
 
@@ -45,4 +50,5 @@ async def massnitrobox(ctx, number: int):
         print(f"Generated {number} codes of Nitro Xbox for the user {ctx.author} in time {datetime.datetime.now()}")
         await ctx.send(f"I generated {number} of Nitro Xbox Unchecked codes for {ctx.author.mention}")
         return
+
 bot.run(token)
